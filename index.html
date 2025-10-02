@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RE:WARP GRID - Large Canvas Edition</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet"> 
+</head>
+<body>
+    <div class="main-layout">
+        <div class="info-panel left">
+            <h2>SCORE</h2>
+            <div id="score-display">
+                <span id="score">0000</span>
+            </div>
+            
+            <div class="control-box">
+                <h2>CONTROLS</h2>
+                <p>MOVE: <span class="neon-text">WASD / ARROWS</span></p>
+                <p>PAUSE/RESUME: <span class="neon-text">SPACE</span></p>
+            </div>
+        </div>
+
+        <div class="game-area">
+            <h1>Re. Snake</h1>
+            <canvas id="gameCanvas" width="600" height="600"></canvas>
+            
+            <img id="decoLogo" src="re.png" alt="RE Logo Decoration" class="canvas-decoration">
+            
+            <div id="button-panel">
+                <button id="pauseButton" class="neon-btn" disabled>PAUSE</button>
+                <button id="startButton" class="neon-btn start-btn">START SIMULATION</button>
+            </div>
+        </div>
+        
+        <div class="info-panel right">
+            <h2>SYSTEM LOG</h2>
+            <div id="system-log">
+                <p class="log-entry"> > SYSTEM INITIATED. WAITING FOR START...</p>
+            </div>
+            
+            <div class="game-info">
+                <h2>GAME INFO</h2>
+                <p>HEAD: <span class="neon-text">RE-CORE (1.5X)</span></p>
+                <p>BODY: <span class="neon-text">GRID-TRON</span></p>
+                <p>BOUNDARY: <span class="neon-text">WARPED</span></p>
+            </div>
+        </div>
+    </div>
+    
+    <div id="overlay" class="hidden">
+        <div id="modal-content">
+            </div>
+    </div>
+
+    <img id="snakeHeadLogo" src="re.png" alt="RE Logo Snake Head" style="display: none;"> 
+    <img id="foodLogo" src="re.png" alt="RE Logo Food" style="display: none;"> 
+
+    <script src="script.js"></script>
+</body>
+</html>

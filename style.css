@@ -1,0 +1,213 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+
+:root {
+    --purple-dark: #1f012e;
+    --purple-medium: #3a0050;
+    --neon-pink: #ff006e;
+    --neon-blue: #00bcd4;
+    --text-color: #f0f0f0;
+    --canvas-border: #9d02d7;
+    --canvas-bg: #0d0014;
+    --shadow-depth: 0 5px 20px rgba(0, 0, 0, 0.7); 
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: var(--purple-dark);
+    color: var(--text-color);
+    font-family: 'Orbitron', sans-serif; 
+    font-size: 14px;
+}
+
+.main-layout {
+    /* PERUBAHAN: Lebar kolom info diperbesar untuk menyeimbangkan ukuran kanvas 600px */
+    display: grid;
+    grid-template-columns: 220px 1fr 220px; 
+    gap: 20px; 
+    max-width: 1100px; /* Lebar maksimum ditingkatkan */
+    width: 95%;
+}
+
+/* --- Info Panels (Left & Right) --- */
+.info-panel {
+    background-color: var(--purple-medium);
+    padding: 15px; 
+    border-radius: 10px;
+    border: 2px solid var(--canvas-border);
+    box-shadow: var(--shadow-depth), 0 0 15px rgba(157, 2, 215, 0.4); 
+    /* Dihilangkan: height: fit-content; agar panel dapat mengisi ruang vertikal */
+}
+
+.info-panel h2 {
+    color: var(--neon-blue);
+    font-size: 1.1em; 
+    border-bottom: 2px solid var(--neon-pink);
+    padding-bottom: 5px;
+    margin-top: 0;
+    margin-bottom: 10px; 
+}
+
+#score-display {
+    font-size: 2.5em; 
+    font-weight: 900;
+    color: var(--neon-pink);
+    text-shadow: 0 0 10px var(--neon-pink);
+    text-align: center;
+    margin-bottom: 20px; 
+}
+
+.control-box, .game-info {
+    margin-top: 20px;
+}
+
+.neon-text {
+    color: var(--neon-blue);
+    font-weight: 700;
+}
+
+/* System Log */
+#system-log {
+    /* PERUBAHAN: Ketinggian diperbesar agar lebih seimbang dengan kanvas 600px */
+    height: 350px; 
+    overflow-y: auto;
+    background-color: var(--purple-dark);
+    border: 1px solid var(--canvas-border);
+    padding: 8px; 
+    border-radius: 5px;
+    font-size: 0.8em; 
+    margin-bottom: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5) inset;
+}
+.log-entry {
+    margin: 0;
+    padding: 2px 0;
+    color: #00ff88; 
+}
+
+/* --- Game Area (Tidak ada perubahan signifikan, canvas diatur oleh atribut HTML) --- */
+.game-area {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.game-area h1 {
+    color: var(--neon-blue);
+    font-weight: 900;
+    margin-bottom: 10px; 
+    text-shadow: 0 0 10px var(--neon-blue);
+}
+
+#gameCanvas {
+    border: 5px solid var(--canvas-border);
+    background-color: var(--canvas-bg);
+    border-radius: 12px;
+    box-shadow: var(--shadow-depth), 0 0 25px rgba(157, 2, 215, 0.8), 0 0 5px var(--neon-pink) inset; 
+    position: relative; 
+}
+
+/* Logo Hiasan Canvas */
+.canvas-decoration {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* Ukuran logo hiasan diperbesar sedikit untuk kanvas yang lebih besar */
+    width: 200px; 
+    height: 200px;
+    opacity: 0.08; 
+    filter: drop-shadow(0 0 10px var(--neon-pink));
+    pointer-events: none; 
+    z-index: 5;
+}
+
+
+/* --- Buttons (Unchanged) --- */
+#button-panel {
+    margin-top: 15px; 
+}
+
+.neon-btn {
+    background-color: var(--neon-pink);
+    color: var(--purple-dark);
+    border: 2px solid var(--neon-pink);
+    padding: 8px 15px; 
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9em;
+    font-weight: 700;
+    box-shadow: 0 0 10px var(--neon-pink);
+    transition: all 0.2s ease-in-out;
+    margin: 0 5px; 
+}
+
+/* (Sisa styling button dan modal tidak berubah) */
+.neon-btn:hover {
+    background-color: var(--purple-medium);
+    color: var(--neon-pink);
+    box-shadow: 0 0 20px var(--neon-pink);
+}
+
+.neon-btn:disabled {
+    background-color: #555;
+    border-color: #777;
+    color: #aaa;
+    box-shadow: none;
+    cursor: not-allowed;
+}
+
+.start-btn {
+    background-color: var(--neon-blue);
+    border-color: var(--neon-blue);
+    box-shadow: 0 0 10px var(--neon-blue);
+    color: var(--purple-dark);
+}
+.start-btn:hover {
+    background-color: var(--purple-medium);
+    color: var(--neon-blue);
+    box-shadow: 0 0 20px var(--neon-blue);
+}
+
+/* --- Modal --- */
+#modal-content {
+    background-color: var(--purple-dark); 
+    padding: 30px;
+    border-radius: 15px; 
+    text-align: center;
+    border: 3px solid var(--neon-pink);
+    box-shadow: 0 0 30px rgba(255, 0, 110, 0.8); 
+    font-family: 'Orbitron', sans-serif;
+}
+
+#modal-content button {
+    background-color: var(--neon-pink); 
+    color: var(--purple-dark);
+}
+#modal-content button:hover {
+    background-color: var(--neon-blue); 
+    color: var(--purple-dark);
+}
+
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(5px); 
+}
+
+#overlay.hidden {
+    display: none;
+}
