@@ -1,8 +1,7 @@
-// --- Game Setup (Unchanged) ---
+// --- Game Setup ---
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 const scoreDisplay = document.getElementById('score');
-const startButton = document.getElementById('startButton');
 const pauseButton = document.getElementById('pauseButton'); 
 const overlay = document.getElementById('overlay');
 const modalContent = document.getElementById('modal-content');
@@ -18,10 +17,10 @@ const POWERUP_SPAWN_CHANCE = 0.2;
 const LOGO_FOOD_SPAWN_CHANCE = 0.1;
 const POWERUP_DURATION = 3000; 
 const WARP_WALLS = true; 
-const LOGO_HEAD_SCALE = 1.5; // NEW: Kepala ular 1.5x lebih besar dari grid
+const LOGO_HEAD_SCALE = 1.5; 
 const LOGO_FOOD_PADDING = 2; 
 
-// --- Item Types (Unchanged) ---
+// --- Item Types ---
 const ITEM_TYPE = {
     NORMAL: 'normal',
     SPECIAL: 'special', 
@@ -30,7 +29,7 @@ const ITEM_TYPE = {
     LOGO_FOOD: 'logo_food' 
 };
 
-// --- Color Palette (Unchanged) ---
+// --- Color Palette ---
 const COLOR_NORMAL_FOOD_FALLBACK = '#ff006e'; 
 const COLOR_SPECIAL_FOOD = '#ffc300';
 const COLOR_SPEED_BOOST = '#00bcd4'; 
@@ -39,8 +38,9 @@ const COLOR_SNAKE_HEAD_FALLBACK = '#ff006e';
 const COLOR_SNAKE_BODY_START = '#9d02d7'; 
 const COLOR_SNAKE_BODY_END = '#6a0572'; 
 const COLOR_CANVAS_BG = '#0d0014'; 
+const COLOR_GRID_LINE = 'rgba(157, 2, 215, 0.2)'; // Warna grid yang lebih halus
 
-// --- Game State Variables (Unchanged) ---
+// --- Game State Variables ---
 let snake = []; 
 let food = {}; 
 let dx = 0; 
@@ -59,8 +59,7 @@ let nextHeadPosition = {};
 let lastTickTime = 0; 
 let animationProgress = 0; 
 
-// [Functions: logSystemMessage, createOscillator, playSFX, startBackgroundMusic, stopBackgroundMusic] (Keep the original content here)
-
+// --- Logging Function (Unchanged) ---
 function logSystemMessage(message, type = 'normal') {
     const logEntry = document.createElement('p');
     logEntry.classList.add('log-entry');
@@ -73,6 +72,11 @@ function logSystemMessage(message, type = 'normal') {
     systemLog.appendChild(logEntry);
     systemLog.scrollTop = systemLog.scrollHeight; 
 }
+
+// --- Sound Functions (Unchanged) ---
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+const audioCtx = new AudioContext();
+let musicOscillator = null; 
 
 function createOscillator(freq, type, duration, volume) {
     if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -119,10 +123,6 @@ function playSFX(type) {
     }
 }
 
-const AudioContext = window.AudioContext || window.webkitAudioContext;
-const audioCtx = new AudioContext();
-let musicOscillator = null; 
-
 function startBackgroundMusic() { 
     if (musicOscillator) return; 
     if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -147,7 +147,7 @@ function stopBackgroundMusic() {
 }
 
 
-// --- Game State Control (Unchanged) ---
+// --- Game State Control (Dihapus startButton) ---
 
 function initializeGame() {
     const startX = 10 * GRID_SIZE;
@@ -170,8 +170,6 @@ function initializeGame() {
     nextHeadPosition = { x: startX + dx, y: startY + dy };
     animationProgress = 0; 
     
-    startButton.textContent = 'RESTART';
-    startButton.disabled = true; 
     pauseButton.disabled = false;
     pauseButton.textContent = 'PAUSE';
     gameStarted = true;
@@ -216,30 +214,23 @@ function endGame(message) {
     gameStarted = false;
     isPaused = false;
     
-    startButton.textContent = 'RESTART';
-    startButton.disabled = false; 
     pauseButton.disabled = true;
     
     playSFX('gameover');
     logSystemMessage(`CRITICAL ERROR: ${message} - FINAL SCORE: ${score}`, 'error'); 
     
-    if (isInverseControlsActive) {
-        isInverseControlsActive = false;
-        if (powerupTimer) clearTimeout(powerupTimer);
-    }
+    if (powerupTimer) clearTimeout(powerupTimer);
     
-    showModal('SYSTEM FAILURE', `<p>RE-CORE DESTROYED. FINAL SCORE: ${score}</p>`, 'RESTART SIMULATION', startGame);
+    showModal('SYSTEM FAILURE', `<p>RE-CORE DESTROYED. FINAL SCORE: ${score}</p>`, 'START SIMULATION', startGame);
 }
 
-// --- Game Logic ---
-
+// --- Game Logic (Unchanged) ---
 function gameTickLogic() {
     if (!gameStarted || isPaused) return; 
 
     lastHeadPosition = { ...snake[0] }; 
     let head = { x: snake[0].x + dx, y: snake[0].y + dy };
     
-    // Warp Walls Logic (Unchanged)
     if (WARP_WALLS) {
         if (head.x < 0) head.x = canvas.width - GRID_SIZE;
         else if (head.x >= canvas.width) head.x = 0;
@@ -264,8 +255,6 @@ function gameTickLogic() {
 
     snake.unshift(head); 
 
-    // --- FIX BUG MAKAN ULAR ---
-    // Pastikan pengecekan x dan y benar
     if (head.x === food.x && head.y === food.y) {
         handleItemPickup(food.type); 
         scoreDisplay.textContent = String(score).padStart(4, '0'); 
@@ -273,7 +262,6 @@ function gameTickLogic() {
     } else {
         snake.pop(); 
     }
-    // -------------------------
     
     animationProgress = 0; 
 }
@@ -363,13 +351,37 @@ function checkCollision(head, body) {
     return false;
 }
 
-// --- Drawing and Animation (Unchanged) ---
+// --- Drawing and Animation ---
+
+// FUNGSI BARU: Menggambar grid di kanvas
+function drawGrid() {
+    ctx.strokeStyle = COLOR_GRID_LINE;
+    ctx.lineWidth = 1; 
+
+    // Garis Vertikal
+    for (let x = 0; x < canvas.width; x += GRID_SIZE) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, canvas.height);
+        ctx.stroke();
+    }
+
+    // Garis Horizontal
+    for (let y = 0; y < canvas.height; y += GRID_SIZE) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvas.width, y);
+        ctx.stroke();
+    }
+}
+
 
 function drawGame(timestamp) {
     if (!gameStarted || isPaused) {
         if (!gameStarted && !isPaused) {
             ctx.fillStyle = COLOR_CANVAS_BG;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
+            drawGrid(); // Gambar grid bahkan saat game belum dimulai
             drawFood(food.x, food.y, food.type);
             drawSnake(1); 
         }
@@ -388,6 +400,7 @@ function drawGame(timestamp) {
 
     ctx.fillStyle = COLOR_CANVAS_BG;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+    drawGrid(); // Gambar grid di setiap frame
 
     drawFood(food.x, food.y, food.type);
     drawSnake(animationProgress);
@@ -451,12 +464,10 @@ function drawSnake(progress) {
         ctx.fill();
     }
     
-    // Draw the head using the RE Logo
     const currentX = lastHeadPosition.x + (nextHeadPosition.x - lastHeadPosition.x) * progress;
     const currentY = lastHeadPosition.y + (nextHeadPosition.y - lastHeadPosition.y) * progress;
     
-    // HEAD SCALING AND OFFSET
-    const headDrawSize = GRID_SIZE * LOGO_HEAD_SCALE; // Menggunakan LOGO_HEAD_SCALE (1.5)
+    const headDrawSize = GRID_SIZE * LOGO_HEAD_SCALE; 
     const headOffset = (headDrawSize - GRID_SIZE) / -2; 
     
     if (snakeHeadLogo.complete && snakeHeadLogo.naturalWidth !== 0) {
@@ -482,7 +493,7 @@ function drawRoundedRect(x, y, width, height, radius) {
     ctx.lineTo(x + width, y + height - radius);
     ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
     ctx.lineTo(x + radius, y + height);
-    ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+    ctx.quadraticCurveCurveTo(x, y + height, x, y + height - radius);
     ctx.lineTo(x, y + radius);
     ctx.quadraticCurveTo(x, y, x + radius, y);
     ctx.closePath();
@@ -527,7 +538,6 @@ document.addEventListener('keydown', (e) => {
         case 's':  if (dy === 0) { newDx = 0; newDy = GRID_SIZE; } break; 
         case 'a':  if (dx === 0) { newDx = -GRID_SIZE; newDy = 0; } break; 
         case 'd': if (dx === 0) { newDx = GRID_SIZE; newDy = 0; } break; 
-        // Fallback for Arrow Keys
         case 'arrowup':    if (dy === 0) { newDx = 0; newDy = -GRID_SIZE; } break; 
         case 'arrowdown':  if (dy === 0) { newDx = 0; newDy = GRID_SIZE; } break;
         case 'arrowleft':  if (dx === 0) { newDx = -GRID_SIZE; newDy = 0; } break;
@@ -556,19 +566,18 @@ function inverseKey(key) {
 
 
 // Event Listeners
-startButton.addEventListener('click', startGame);
 pauseButton.addEventListener('click', togglePause);
 
 
-// Initial Load (Unchanged)
+// Initial Load 
 window.onload = () => {
     const loadHandler = () => {
         initializeGame();
         drawGame(performance.now());
         
-        showModal('WELCOME TO RE:WARP GRID', 
-                  `<p>Navigate the grid using **WASD** or Arrow Keys. Consume data to grow the RE-CORE.</p>
-                   <p>Warning: Boundary walls are warped (teleportation active).</p>`, 
+        showModal('SYSTEM BOOT UP COMPLETE', 
+                  `<p>RE-CORE ACTIVATED. PRESS START SIMULATION TO INITIATE GAMEPLAY.</p>
+                   <p>Warning: Game difficulty has been raised.</p>`, 
                   'START SIMULATION', startGame);
     };
 

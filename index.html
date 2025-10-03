@@ -3,34 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RE:WARP GRID - Large Canvas Edition</title>
-    <link rel="stylesheet" href="style.css">
+    <title>RE:WARP GRID - Professional Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"> 
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="main-layout">
+        
         <div class="info-panel left">
             <h2>SCORE</h2>
             <div id="score-display">
                 <span id="score">0000</span>
             </div>
             
+            <div class="rules-guide">
+                <h2>GAME RULES</h2>
+                <div class="rule-section">
+                    <h3>MOVEMENT & POINT</h3>
+                    <p>CONTROL: <span class="neon-text">WASD/ARROWS</span></p>
+                    <p>GROWTH: <span class="neon-text">CONSUME DATA (FOOD)</span></p>
+                    <p>DEATH: <span class="neon-text">SELF-COLLISION</span></p>
+                    <p>SCORE: <span class="neon-text">DATA CONSUMED</span></p>
+                </div>
+
+                <div class="rule-section">
+                    <h3>ITEM DEFINITION</h3>
+                    <p>NORMAL FOOD: <span class="neon-text">STANDARD GROWTH (+10 Pts)</span></p>
+                    <p>LOGO FOOD: <span class="neon-text">CRITICAL DATA (+100 Pts)</span></p>
+                    <p>POWER-UPS: <span class="neon-text">TEMPORARY EFFECTS</span></p>
+                </div>
+            </div>
+            
             <div class="control-box">
                 <h2>CONTROLS</h2>
                 <p>MOVE: <span class="neon-text">WASD / ARROWS</span></p>
-                <p>PAUSE/RESUME: <span class="neon-text">SPACE</span></p>
+                <p>PAUSE: <span class="neon-text">SPACE</span></p>
             </div>
         </div>
 
         <div class="game-area">
-            <h1>Re. Snake</h1>
+            <h1>RE: WARP GRID</h1>
             <canvas id="gameCanvas" width="600" height="600"></canvas>
             
             <img id="decoLogo" src="re.png" alt="RE Logo Decoration" class="canvas-decoration">
             
             <div id="button-panel">
                 <button id="pauseButton" class="neon-btn" disabled>PAUSE</button>
-                <button id="startButton" class="neon-btn start-btn">START SIMULATION</button>
             </div>
         </div>
         

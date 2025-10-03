@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Orbitron:wght@400;700;900&display=swap');
 
 :root {
     --purple-dark: #1f012e;
@@ -8,7 +8,7 @@
     --text-color: #f0f0f0;
     --canvas-border: #9d02d7;
     --canvas-bg: #0d0014;
-    --shadow-depth: 0 5px 20px rgba(0, 0, 0, 0.7); 
+    --shadow-depth: 0 8px 25px rgba(0, 0, 0, 0.8); /* Shadow lebih dalam dan profesional */
 }
 
 body {
@@ -19,49 +19,74 @@ body {
     margin: 0;
     background-color: var(--purple-dark);
     color: var(--text-color);
-    font-family: 'Orbitron', sans-serif; 
-    font-size: 14px;
+    /* FONT RETRO ARCADE */
+    font-family: 'Press Start 2P', cursive; 
+    font-size: 10px; /* Ukuran font lebih kecil agar terlihat seperti retro arcade */
 }
 
 .main-layout {
-    /* PERUBAHAN: Lebar kolom info diperbesar untuk menyeimbangkan ukuran kanvas 600px */
     display: grid;
-    grid-template-columns: 220px 1fr 220px; 
-    gap: 20px; 
-    max-width: 1100px; /* Lebar maksimum ditingkatkan */
+    grid-template-columns: 240px 1fr 240px; /* Lebar kolom UI ditingkatkan sedikit */
+    gap: 30px; /* Jarak antar kolom diperlebar */
+    max-width: 1200px; 
     width: 95%;
 }
 
 /* --- Info Panels (Left & Right) --- */
 .info-panel {
     background-color: var(--purple-medium);
-    padding: 15px; 
-    border-radius: 10px;
-    border: 2px solid var(--canvas-border);
-    box-shadow: var(--shadow-depth), 0 0 15px rgba(157, 2, 215, 0.4); 
-    /* Dihilangkan: height: fit-content; agar panel dapat mengisi ruang vertikal */
+    padding: 20px; /* Padding lebih besar */
+    border-radius: 12px;
+    border: 3px solid var(--canvas-border); /* Border lebih tebal */
+    box-shadow: var(--shadow-depth), 0 0 20px rgba(157, 2, 215, 0.6); 
+    /* Membuat kedua panel terentang penuh di samping kanvas */
+    display: flex;
+    flex-direction: column; 
+    justify-content: space-between;
 }
 
 .info-panel h2 {
     color: var(--neon-blue);
-    font-size: 1.1em; 
-    border-bottom: 2px solid var(--neon-pink);
-    padding-bottom: 5px;
+    font-size: 1.0em; 
+    border-bottom: 3px solid var(--neon-pink);
+    padding-bottom: 8px;
     margin-top: 0;
-    margin-bottom: 10px; 
+    margin-bottom: 15px; 
+    text-shadow: 0 0 5px var(--neon-blue);
 }
 
 #score-display {
-    font-size: 2.5em; 
+    font-size: 3.0em; 
     font-weight: 900;
     color: var(--neon-pink);
-    text-shadow: 0 0 10px var(--neon-pink);
+    text-shadow: 0 0 15px var(--neon-pink);
     text-align: center;
-    margin-bottom: 20px; 
+    margin-bottom: 25px; 
+}
+
+/* Penyesuaian untuk panel aturan baru */
+.rules-guide {
+    margin-bottom: 25px; 
+    flex-grow: 1; /* Memastikan rules guide mengisi ruang yang tersedia */
+}
+
+.rule-section {
+    margin-bottom: 15px;
+}
+.rule-section h3 {
+    font-size: 0.8em;
+    color: var(--neon-blue);
+    margin: 10px 0 5px 0;
+}
+.rule-section p {
+    line-height: 1.5;
+    margin: 3px 0;
 }
 
 .control-box, .game-info {
-    margin-top: 20px;
+    margin-top: 15px;
+    border-top: 2px dashed rgba(255, 255, 255, 0.1);
+    padding-top: 15px;
 }
 
 .neon-text {
@@ -71,16 +96,16 @@ body {
 
 /* System Log */
 #system-log {
-    /* PERUBAHAN: Ketinggian diperbesar agar lebih seimbang dengan kanvas 600px */
+    /* Tinggi Log dihitung agar pas dengan area Rules Guide di sisi lain */
     height: 350px; 
     overflow-y: auto;
     background-color: var(--purple-dark);
-    border: 1px solid var(--canvas-border);
+    border: 2px solid var(--canvas-border);
     padding: 8px; 
     border-radius: 5px;
-    font-size: 0.8em; 
-    margin-bottom: 10px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5) inset;
+    font-size: 0.7em; 
+    margin-bottom: 15px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.7) inset;
 }
 .log-entry {
     margin: 0;
@@ -88,7 +113,7 @@ body {
     color: #00ff88; 
 }
 
-/* --- Game Area (Tidak ada perubahan signifikan, canvas diatur oleh atribut HTML) --- */
+/* --- Game Area --- */
 .game-area {
     text-align: center;
     display: flex;
@@ -98,6 +123,7 @@ body {
 }
 
 .game-area h1 {
+    font-family: 'Orbitron', sans-serif; /* Judul tetap modern */
     color: var(--neon-blue);
     font-weight: 900;
     margin-bottom: 10px; 
@@ -105,10 +131,10 @@ body {
 }
 
 #gameCanvas {
-    border: 5px solid var(--canvas-border);
+    border: 6px solid var(--canvas-border); /* Border kanvas lebih menonjol */
     background-color: var(--canvas-bg);
-    border-radius: 12px;
-    box-shadow: var(--shadow-depth), 0 0 25px rgba(157, 2, 215, 0.8), 0 0 5px var(--neon-pink) inset; 
+    border-radius: 15px;
+    box-shadow: var(--shadow-depth), 0 0 35px rgba(157, 2, 215, 0.8), 0 0 8px var(--neon-pink) inset; 
     position: relative; 
 }
 
@@ -118,7 +144,6 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    /* Ukuran logo hiasan diperbesar sedikit untuk kanvas yang lebih besar */
     width: 200px; 
     height: 200px;
     opacity: 0.08; 
@@ -128,7 +153,7 @@ body {
 }
 
 
-/* --- Buttons (Unchanged) --- */
+/* --- Buttons (Unchanged Style) --- */
 #button-panel {
     margin-top: 15px; 
 }
@@ -145,9 +170,9 @@ body {
     box-shadow: 0 0 10px var(--neon-pink);
     transition: all 0.2s ease-in-out;
     margin: 0 5px; 
+    font-family: 'Press Start 2P', cursive;
 }
 
-/* (Sisa styling button dan modal tidak berubah) */
 .neon-btn:hover {
     background-color: var(--purple-medium);
     color: var(--neon-pink);
@@ -174,7 +199,7 @@ body {
     box-shadow: 0 0 20px var(--neon-blue);
 }
 
-/* --- Modal --- */
+/* --- Modal (Font disesuaikan) --- */
 #modal-content {
     background-color: var(--purple-dark); 
     padding: 30px;
@@ -182,12 +207,13 @@ body {
     text-align: center;
     border: 3px solid var(--neon-pink);
     box-shadow: 0 0 30px rgba(255, 0, 110, 0.8); 
-    font-family: 'Orbitron', sans-serif;
+    font-family: 'Press Start 2P', cursive;
 }
 
 #modal-content button {
     background-color: var(--neon-pink); 
     color: var(--purple-dark);
+    font-family: 'Press Start 2P', cursive;
 }
 #modal-content button:hover {
     background-color: var(--neon-blue); 
